@@ -12,6 +12,8 @@
   },
   "devDependencies": {},
   "scripts": {
+    "start":"node sserver.js",
+    "dev":"nodemon server.js",
     "test": "d"
   },
   "author": "",
