@@ -2,14 +2,29 @@ import "dotenv/config";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import cors from "cors";
+
 
 
 const app= express();
 const PORT =process.env.PORT || 8000;
-//use miidelwares
+
+//USE MIIDLEWARES
+app.use(cors());
 app.use(helmet());//for saftey hacking secure
-app.use(morgan());
+app.use(morgan("tiny"));//GIVES THE DEAILS OF LCAOTION, LOCALHOST WHO IS USING
 app.use(express.json());
+
+//CONNECT TO DB
+import { mongoConnect } from "./src/config/dbConfig.js";
+mongoConnect();
+
+//APIS
+import registerLoginRouter from "./src/routers/registerLogin.js"
+app.use("/api/v1/register-login",registerLoginRouter);
+
+    
+
 app.get("/",(req,res)=>
 {
     res.json(
@@ -20,13 +35,13 @@ app.get("/",(req,res)=>
         
     
 });
-app.use((error,req,res)=>
+app.use((error,req,res,next)=>
 {
-    console.log(error);
-    res.status =error.status || 404;
-    res.json({
+    console.log(error.message);
+    const status =error.status || 404;
+    res.status(status).json({
         status:"error",
-        message:message.error,
+        message:error.message,
     })
 })
 

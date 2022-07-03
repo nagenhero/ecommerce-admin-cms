@@ -1,0 +1,1 @@
+npm i react-bootstrap bootstrap axios react-router-dom  @reduxjs/toolkit react-toastify
